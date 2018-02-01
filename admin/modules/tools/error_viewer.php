@@ -53,23 +53,23 @@ $last = $itemcount - 1;
 unset($entries[$last]);
 if($mybb->input['page'])
 {
-    $page = $mybb->get_input("page", MyBB::INPUT_INT);
+    $current_page = $mybb->get_input("page", MyBB::INPUT_INT);
 }
 else
 {
-    $page = 1;
+    $current_page = 1;
 }
-if(!$page)
+if(!$current_page)
 {
-    $page = 1;
+    $current_page = 1;
 }
 $pages = ceil($last / 50);
-if($page > $pages)
+if($current_page > $pages)
 {
-    $page = $pages;
+    $current_page = $pages;
 }
-$start = $page * 50 - 50;
-$pagination = draw_admin_pagination($page, 50, $last, "index.php?module=tools-error_viewer&location=" . $location);
+$start = $current_page * 50 - 50;
+$pagination = draw_admin_pagination($current_page, 50, $last, "index.php?module=tools-error_viewer&location=" . $location);
 
 /* Flip the array so the newest errors are shown first since that is usually what admins want. */
 $entries = array_reverse($entries);
