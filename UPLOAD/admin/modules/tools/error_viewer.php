@@ -46,12 +46,10 @@ if(!$filecontents)
     exit;
 }
 
-preg_match_all('/\<error\>(.*?)\<\/error\>/is', $filecontents, $matches);
-
-$entries = $matches[0];
+$entries = explode("\n\n", $filecontents);
 $itemcount = count($entries);
 $last = $itemcount - 1;
-//unset($entries[$last]);
+unset($entries[$last]);
 if($mybb->input['page'])
 {
     $current_page = $mybb->get_input("page", MyBB::INPUT_INT);
@@ -87,16 +85,34 @@ $table->construct_header($lang->error_viewer_message);
 $table->construct_row();
 foreach($error_array as $entry)
 {
-    preg_match_all('/<dateline>([0-9]+)<\/dateline>|<script>(.*)<\/script>|<line>([0-9]+)<\/line>|<friendly_type>(.*)<\/friendly_type>|<message>(.*)<\/message>/is', $entry, $string);
-    $date = my_date('relative', $string[1][0]);
-    $filename = $string[2][1];
-    $line = $string[3][2];
-    if(!$line)
+    $back_trace = '';
+    if(function_exists('debug_backtrace') && $mybb->version_code >= 1820)
     {
-        $line = '-';
+        $back_trace = "\t<back_trace>(.*)<\/back_trace>\n";
     }
-    $friendly_type = $string[4][3];
-    $message = nl2br($string[5][4]);
+
+    $string = array();
+
+    preg_match_all('/\A<error>\n'
+    .'\t<dateline>([0-9]+)<\/dateline>\n'
+    .'\t<script>(.*)<\/script>\n'
+    .'\t<line>([0-9]+)<\/line>\n'
+    .'\t<type>([0-9]+)<\/type>\n'
+    .'\t<friendly_type>(.*)<\/friendly_type>\n'
+    .'\t<message>(.*)<\/message>\n'
+    .$back_trace
+    .'<\/error>(.*?)\Z/is', $entry, $string);
+
+    if(empty($string))
+    {
+        continue;
+    }
+
+    $date = my_date('relative', (int)$string[1][0]);
+    $filename = htmlspecialchars_uni($string[2][0]);
+    $line = $string[3][0] !=0 ? $string[3][0] : '-';
+    $friendly_type = $string[5][0];
+    $message = nl2br($string[6][0]);
 
     $table->construct_cell($date, array("class" => "align_center"));
     $table->construct_cell($filename);
@@ -104,6 +120,8 @@ foreach($error_array as $entry)
     $table->construct_cell($friendly_type, array("class" => "align_center"));
     $table->construct_cell($message);
     $table->construct_row();
+
+    unset($string);
 }
 $table->output($lang->error_viewer_errors_warnings);
 
