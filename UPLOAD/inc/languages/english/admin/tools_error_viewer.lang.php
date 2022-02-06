@@ -14,3 +14,4 @@ $l['error_viewer_message'] = "Message";
 $l['error_viewer_errors_warnings'] = "Errors &amp; Warnings";
 $l['error_viewer_can_view'] = "Can view error log";
 $l['error_viewer_file_not_found'] = "Unable to find the error log file.  Check your server &amp; optimization settings.";
+$l['error_viewer_no_entries'] = "The error log file contains no entries.";

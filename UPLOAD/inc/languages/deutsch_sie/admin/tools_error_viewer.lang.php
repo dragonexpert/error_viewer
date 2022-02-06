@@ -14,3 +14,4 @@ $l['error_viewer_message'] = "Nachricht";
 $l['error_viewer_errors_warnings'] = "Fehler &amp; Warnungen";
 $l['error_viewer_can_view'] = "Kann Fehlerprotokoll sehen";
 $l['error_viewer_file_not_found'] = "Die Fehlerprotokolldatei konnte nicht gefunden werden. Überprüfen Sie Ihren Server und Optimierungseinstellungen.";
+$l['error_viewer_no_entries'] = "Die Fehlerprotokolldatei enthält keine Einträge.";

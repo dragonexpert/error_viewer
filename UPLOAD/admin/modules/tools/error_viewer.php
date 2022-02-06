@@ -1,5 +1,5 @@
 <?php
-if(!defined("IN_MYBB"))
+if (!defined("IN_MYBB"))
 {
     die("Direct access not allowed.");
 }
@@ -18,13 +18,15 @@ $sub_tabs = array(
 );
 
 $location = $mybb->get_input("location");
-if($location == "backend")
+$fileexists = false;
+if ($location == "backend")
 {
     $page->add_breadcrumb_item($lang->error_viewer_error_log_backend, "index.php?module=tools-error_viewer&amp;location=backend");
     $page->output_header($lang->error_viewer_error_log_backend);
     $page->output_nav_tabs($sub_tabs, 'backend');
-    if(@file_exists(MYBB_ROOT . "/" . $config['admin_dir'] . "/" . $mybb->settings['errorloglocation']))
+    if (@file_exists(MYBB_ROOT . "/" . $config['admin_dir'] . "/" . $mybb->settings['errorloglocation']))
     {
+        $fileexists = true;
         $filecontents = @file_get_contents(MYBB_ROOT . "/" . $config['admin_dir'] . "/" . $mybb->settings['errorloglocation']);
     }
 }
@@ -33,13 +35,14 @@ else
     $page->add_breadcrumb_item($lang->error_viewer_error_log_frontend, "index.php?module=tools-error_viewer");
     $page->output_header($lang->error_viewer_error_log_frontend);
     $page->output_nav_tabs($sub_tabs, 'frontend');
-    if(@file_exists(MYBB_ROOT . "/" . $mybb->settings['errorloglocation']))
+    if (@file_exists(MYBB_ROOT . "/" . $mybb->settings['errorloglocation']))
     {
+        $fileexists = true;
         $filecontents = @file_get_contents(MYBB_ROOT . "/" . $mybb->settings['errorloglocation']);
         $location = "frontend";
     }
 }
-if(!$filecontents)
+if (!$filecontents && !$fileexists)
 {
     $page->output_error($lang->error_viewer_file_not_found);
     $page->output_footer();
@@ -50,7 +53,7 @@ $entries = explode("\n\n", $filecontents);
 $itemcount = count($entries);
 $last = $itemcount - 1;
 unset($entries[$last]);
-if($mybb->input['page'])
+if ($mybb->input['page'])
 {
     $current_page = $mybb->get_input("page", MyBB::INPUT_INT);
 }
@@ -58,12 +61,12 @@ else
 {
     $current_page = 1;
 }
-if(!$current_page)
+if (!$current_page)
 {
     $current_page = 1;
 }
 $pages = ceil($last / 50);
-if($current_page > $pages)
+if ($current_page > $pages)
 {
     $current_page = $pages;
 }
@@ -83,46 +86,55 @@ $table->construct_header($lang->error_viewer_line, array("class" => "align_cente
 $table->construct_header($lang->error_viewer_type, array("class" => "align_center", 'width' => '10%'));
 $table->construct_header($lang->error_viewer_message);
 $table->construct_row();
-foreach($error_array as $entry)
+if (!empty($error_array))
 {
-    $back_trace = '';
-    if(function_exists('debug_backtrace') && $mybb->version_code >= 1820)
+    foreach ($error_array as $entry)
     {
-        $back_trace = "\t<back_trace>(.*)<\/back_trace>\n";
+        $back_trace = '';
+        if (function_exists('debug_backtrace') && $mybb->version_code >= 1820)
+        {
+            $back_trace = "\t<back_trace>(.*)<\/back_trace>\n";
+        }
+
+        $string = array();
+
+        preg_match_all('/\A<error>\n'
+            . '\t<dateline>([0-9]+)<\/dateline>\n'
+            . '\t<script>(.*)<\/script>\n'
+            . '\t<line>([0-9]+)<\/line>\n'
+            . '\t<type>([0-9]+)<\/type>\n'
+            . '\t<friendly_type>(.*)<\/friendly_type>\n'
+            . '\t<message>(.*)<\/message>\n'
+            . $back_trace
+            . '<\/error>(.*?)\Z/is', $entry, $string);
+
+        if (empty($string))
+        {
+            continue;
+        }
+
+        $date = my_date('relative', (int)$string[1][0]);
+        $filename = htmlspecialchars_uni($string[2][0]);
+        $line = $string[3][0] != 0 ? $string[3][0] : '-';
+        $friendly_type = $string[5][0];
+        $message = nl2br($string[6][0]);
+
+        $table->construct_cell($date, array("class" => "align_center"));
+        $table->construct_cell($filename);
+        $table->construct_cell($line, array("class" => "align_center"));
+        $table->construct_cell($friendly_type, array("class" => "align_center"));
+        $table->construct_cell($message);
+        $table->construct_row();
+
+        unset($string);
     }
-
-    $string = array();
-
-    preg_match_all('/\A<error>\n'
-    .'\t<dateline>([0-9]+)<\/dateline>\n'
-    .'\t<script>(.*)<\/script>\n'
-    .'\t<line>([0-9]+)<\/line>\n'
-    .'\t<type>([0-9]+)<\/type>\n'
-    .'\t<friendly_type>(.*)<\/friendly_type>\n'
-    .'\t<message>(.*)<\/message>\n'
-    .$back_trace
-    .'<\/error>(.*?)\Z/is', $entry, $string);
-
-    if(empty($string))
-    {
-        continue;
-    }
-
-    $date = my_date('relative', (int)$string[1][0]);
-    $filename = htmlspecialchars_uni($string[2][0]);
-    $line = $string[3][0] !=0 ? $string[3][0] : '-';
-    $friendly_type = $string[5][0];
-    $message = nl2br($string[6][0]);
-
-    $table->construct_cell($date, array("class" => "align_center"));
-    $table->construct_cell($filename);
-    $table->construct_cell($line, array("class" => "align_center"));
-    $table->construct_cell($friendly_type, array("class" => "align_center"));
-    $table->construct_cell($message);
-    $table->construct_row();
-
-    unset($string);
 }
+else
+{
+    $table->construct_cell($lang->error_viewer_no_entries, array('colspan' => '5'));
+    $table->construct_row();
+}
+
 $table->output($lang->error_viewer_errors_warnings);
 
 echo $pagination;
