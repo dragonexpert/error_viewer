@@ -53,7 +53,7 @@ $entries = explode("\n\n", $filecontents);
 $itemcount = count($entries);
 $last = $itemcount - 1;
 unset($entries[$last]);
-if ($mybb->input['page'])
+if (!empty($mybb->input['page']))
 {
     $current_page = $mybb->get_input("page", MyBB::INPUT_INT);
 }
