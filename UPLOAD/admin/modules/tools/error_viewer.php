@@ -112,12 +112,14 @@ if (!empty($error_array))
         {
             continue;
         }
-
-        $date = my_date('relative', (int)$string[1][0]);
-        $filename = htmlspecialchars_uni($string[2][0]);
-        $line = $string[3][0] != 0 ? $string[3][0] : '-';
-        $friendly_type = $string[5][0];
-        $message = nl2br($string[6][0]);
+        else
+        {
+            $date = my_date('relative', (int)$string[1][0]);
+            $filename = htmlspecialchars_uni($string[2][0]);
+            $line = $string[3][0] != 0 ? $string[3][0] : '-';
+            $friendly_type = $string[5][0];
+            $message = nl2br($string[6][0]);
+        }
 
         $table->construct_cell($date, array("class" => "align_center"));
         $table->construct_cell($filename);
