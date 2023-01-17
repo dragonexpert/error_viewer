@@ -42,7 +42,7 @@ else
         $location = "frontend";
     }
 }
-if (!$filecontents && !$fileexists)
+if (!isset($filecontents) && $fileexists !== true)
 {
     $page->output_error($lang->error_viewer_file_not_found);
     $page->output_footer();
