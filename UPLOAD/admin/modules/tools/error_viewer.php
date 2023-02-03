@@ -28,9 +28,11 @@ if ($mybb->input['action'] == "clear" && $mybb->request_method == "post")
         {
             case "frontend":
                 $file = $error_file_frontend;
+                $log_admin_action = $lang->error_viewer_admin_log_frontend;
                 break;
             case "backend":
                 $file = $error_file_backend;
+                $log_admin_action = $lang->error_viewer_admin_log_backend;
                 break;
         }
 
@@ -43,7 +45,8 @@ if ($mybb->input['action'] == "clear" && $mybb->request_method == "post")
 
         if ($ret !== false)
         {
-            flash_message($lang->error_viewer_all_logs_cleared, 'success');
+            log_admin_action($log_admin_action);
+            flash_message($lang->sprintf($lang->error_viewer_logs_cleared, $log_admin_action), 'success');
         }
         else
         {

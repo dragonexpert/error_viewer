@@ -19,8 +19,13 @@ $l['error_viewer_no_entries'] = "Die Fehlerprotokolldatei enthält keine Einträ
 
 $l['error_viewer_clear_log'] = "Fehlerprotokoll Leeren";
 
-$l['error_viewer_clear_frontend_log_confirm'] = "Möchten Sie wirklich alle Fehlereinträge des Mitgliederbereiches löschen? - Das kann nicht rückgängig gemacht werden!";
-$l['error_viewer_clear_backend_log_confirm'] = "Möchten Sie wirklich alle Fehlereinträge des Administrationsbereiches löschen? - Das kann nicht rückgängig gemacht werden!";
+$l['error_viewer_clear_frontend_log_confirm'] = "Möchten Sie wirklich alle Fehlereinträge im Protokoll des Mitgliederbereiches löschen? - Das kann nicht rückgängig gemacht werden!";
+$l['error_viewer_clear_backend_log_confirm'] = "Möchten Sie wirklich alle Fehlereinträge im Protokoll des Administrationsbereiches löschen? - Das kann nicht rückgängig gemacht werden!";
 
-$l['error_viewer_all_logs_cleared'] = "Fertig, alle Logs wurden gelöscht!";
-$l['error_viewer_clearing_failed'] = "Leider kann die Protokolldatei aufgrund eines unbekannten Problems nicht gelöscht werden!";
+$l['error_viewer_all_logs_cleared'] = "Fertig, Fehlereinträge im Protokoll des {1} wurden gelöscht!";
+$l['error_viewer_clearing_failed'] = "Leider kann die Protokolldatei aufgrund eines unbekannten Problems nicht geleert werden!";
+
+$l['error_viewer_admin_log_frontend'] = "Mitglieder-Bereiches";
+$l['error_viewer_admin_log_backend'] = "Administrations-Bereiches";
+
+$l['admin_log_tools_error_viewer_clear'] = "Fehlerprotokoll des {1} geleert";
