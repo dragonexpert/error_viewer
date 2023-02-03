@@ -17,8 +17,7 @@ $l['error_viewer_can_view'] = "Kann Fehlerprotokoll sehen";
 $l['error_viewer_file_not_found'] = "Die Fehlerprotokolldatei konnte nicht gefunden werden. Überprüfen Sie Ihren Server und Optimierungseinstellungen.";
 $l['error_viewer_no_entries'] = "Die Fehlerprotokolldatei enthält keine Einträge.";
 
-$l['error_viewer_clear_frontend_log'] = "Leere Log Mitgliederbereich";
-$l['error_viewer_clear_backend_log'] = "Leere Log Administrationsbereich";
+$l['error_viewer_clear_log'] = "Fehlerprotokoll Leeren";
 
 $l['error_viewer_clear_frontend_log_confirm'] = "Möchten Sie wirklich alle Fehlereinträge des Mitgliederbereiches löschen? - Das kann nicht rückgängig gemacht werden!";
 $l['error_viewer_clear_backend_log_confirm'] = "Möchten Sie wirklich alle Fehlereinträge des Administrationsbereiches löschen? - Das kann nicht rückgängig gemacht werden!";

@@ -183,13 +183,11 @@ if (!$mybb->input['action'])
 
     if (!empty($error_array) && $fileexists !== false)
     {
-        $error_viewer_clear_log = "error_viewer_clear_{$location}_log";
         $error_viewer_clear_log_confirm = "error_viewer_clear_{$location}_log_confirm";
-
 
         $form = new Form("index.php?module=tools-error_viewer&amp;action=clear&amp;location={$location}", "post");
         $buttons = array();
-        $buttons[] = $form->generate_submit_button($lang->$error_viewer_clear_log, array('name' => 'clear', 'onclick' => "return confirm('{$lang->$error_viewer_clear_log_confirm}');"));
+        $buttons[] = $form->generate_submit_button($lang->error_viewer_clear_log, array('name' => 'clear', 'onclick' => "return confirm('{$lang->$error_viewer_clear_log_confirm}');"));
         $form->output_submit_wrapper($buttons);
         $form->end();
     }
