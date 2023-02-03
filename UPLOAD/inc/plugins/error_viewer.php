@@ -37,7 +37,10 @@ function error_viewer_admin_tools_menu_logs(&$sub_menu)
 {
     global $lang;
     $lang->load("tools_error_viewer");
-    $sub_menu[77] = array(
+
+    end($sub_menu);
+    $key = (key($sub_menu)) + 10;
+    $sub_menu[$key] = array(
         "id" => "error_viewer",
         "title" => $lang->error_viewer_error_log,
         "link" => "index.php?module=tools-error_viewer"
