@@ -4,6 +4,20 @@ if (!defined("IN_MYBB"))
     die("Direct access not allowed.");
 }
 
+if (!in_array($mybb->settings['errorlogmedium'], array('log', 'both')))
+{
+    $query = $db->simple_select('settings', 'gid', 'name="errorlogmedium"', array('limit' => 1));
+    $gid = $db->fetch_field($query, 'gid');
+
+    $lang->error_viewer_logging_disabled = $lang->sprintf($lang->error_viewer_logging_disabled, "index.php?module=config-settings&action=change&gid={$gid}");
+
+    $page->add_breadcrumb_item($lang->error_viewer_error_log_page, "index.php?module=tools-error_viewer");
+    $page->output_header($lang->error_viewer_error_log_page);
+    $page->output_error($lang->error_viewer_logging_disabled);
+    $page->output_footer();
+    exit;
+}
+
 $error_file_frontend = MYBB_ROOT . "/" . $mybb->settings['errorloglocation'];
 $error_file_backend = MYBB_ROOT . "/" . $config['admin_dir'] . "/" . $mybb->settings['errorloglocation'];
 

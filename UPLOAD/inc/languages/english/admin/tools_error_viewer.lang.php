@@ -29,3 +29,6 @@ $l['error_viewer_admin_log_frontend'] = "front end";
 $l['error_viewer_admin_log_backend'] = "admin end";
 
 $l['admin_log_tools_error_viewer_clear'] = "Cleared {1} error logs";
+
+$l['error_viewer_error_log_page'] = "Error Log Page";
+$l['error_viewer_logging_disabled'] = "<strong>Error logging is disabled in configuration.....please enable it on <a href=\"{1}\">Server and Optimization Options</a>!</strong>";

@@ -29,3 +29,6 @@ $l['error_viewer_admin_log_frontend'] = "Mitglieder-Bereiches";
 $l['error_viewer_admin_log_backend'] = "Administrations-Bereiches";
 
 $l['admin_log_tools_error_viewer_clear'] = "Fehlerprotokoll des {1} geleert";
+
+$l['error_viewer_error_log_page'] = "Fehlerprotokoll Forum";
+$l['error_viewer_logging_disabled'] = "<strong>Die Fehlerprotokollierung ist in der Konfiguration deaktiviert. Bitte aktivieren Sie diese in den <a href=\"{1}\">Server- und Optimierungsoptionen</a>!</strong>";
