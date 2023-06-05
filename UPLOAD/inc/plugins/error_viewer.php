@@ -17,7 +17,7 @@ function error_viewer_info()
         "name" => "Error Viewer",
         "description" => "Allows you to view errors in the tools section.",
         "author" => "Mark Janssen - modified by SvePu",
-        "version" => "1.2",
+        "version" => "1.3",
         "codename" => "error_viewer",
         "compatibility" => "18*"
     );
